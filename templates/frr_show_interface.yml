@@ -1,0 +1,15 @@
+- example: Interface enp0s3 is up, line protocol is up
+  getval: 'Interface (?P<name>\S+) is (?P<oper_state>\S+),'
+  result:
+    "{{ name }}":
+      name: "{{ name }}"
+      state:
+        operating: "{{ oper_state }}"
+  # la variable name doit être visible ensuite...
+  shared: true
+
+- example: "  HWaddr: 08:00:27:3d:37:7f"
+  getval: '\s+HWaddr: (?P<mac>.*)'
+  result:
+    "{{ name }}":
+      mac_address: "{{ mac }}"
