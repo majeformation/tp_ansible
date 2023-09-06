@@ -35,3 +35,4 @@
     - name: Show result
       debug:
         var: hostvars
+
