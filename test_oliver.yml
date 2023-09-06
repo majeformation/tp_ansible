@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+  - name: print test
+    debug:
+      msg: "test"
