@@ -1,0 +1,38 @@
+# Test cnx sur FRR
+- hosts: all
+  gather_facts: false
+  #connection: ansible.netcommon.network_cli
+  tasks:
+    - name: telnet init
+      telnet:
+        timeout: 3
+        user:
+        login_prompt: "Password: "
+        password_prompt: "Password: "
+        password: password
+        port: '{{ ansible_port }}'
+        prompts:
+          - "> "
+        commands:
+          - show interface
+      register: previous_command
+
+    #- name: Run command and parse with native
+    #  ansible.utils.cli_parse:
+    #    command: "show interface"
+    #    parser:
+    #      name: ansible.netcommon.native
+    #    set_fact: interfaces_fact
+
+    - name: Pass text and template_path
+      ansible.utils.cli_parse:
+        text: "{{ previous_command['stdout'] }}"
+        parser:
+          name: ansible.netcommon.native
+          template_path: "templates/frr_show_interface.yml"
+        set_fact: native_interface
+
+    - name: Show result
+      debug:
+        var: hostvars
+
